@@ -1,0 +1,50 @@
+﻿@page "/login"
+
+@using BlazorAuth.Data
+@using BlazorAuth.Models.ViewModels
+@using System.Security.Claims
+@using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Authentication.Cookies
+@inject NavigationManager navi
+
+<EditForm Model="Model" OnvalidSubmit="Authenticate" FormName="LoginForm">
+    <DataAnnotationsValidator />
+    <InputText @bind-Value="Model.UserName" class="form-control" placeholder="UserName"></InputText>
+    <ValidationMessage For="() => Model.UserName"></ValidationMessage>
+    <hr />
+    <InputText @bind-Value="Model.Password" class="form-control" placeholder="Password"></InputText>
+    <ValidationMessage For="() => Model.Password"></ValidationMessage>
+    <hr />
+    <p class="text-danger">@errMsg</p>
+    <button type="submit" class="btn btn-success">Login</button>
+</EditForm>
+
+@code {
+    [CascadingParameter]
+    public HttpContext? httpctx { get; set; }
+    [SupplyParameterFromForm]
+    public LoginViewModel Model { get; set; } = new();
+    private User usr = new();
+    private string errMsg = string.Empty;
+
+    private async Task Authenticate()
+    {
+        User existing = usr.GetUser().FirstOrDefault(x => x.user_name == Model.UserName);
+        if (existing is null || existing.password != Model.Password)
+        {
+            errMsg = "Invalid Username Or Password";
+            return;
+        }
+
+        var claims = new List<Claim>
+        {
+            new Claim(type:ClaimTypes.Name,value: Model.UserName),
+            new Claim(type:ClaimTypes.Role,value:existing.role)
+        };
+
+        var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+        var principal = new ClaimsPrincipal(identity);
+        await httpctx.SignInAsync(principal);
+        navi.NavigateTo("/");
+    }
+}
