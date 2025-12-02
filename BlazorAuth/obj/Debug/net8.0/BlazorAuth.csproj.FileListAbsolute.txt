@@ -169,3 +169,4 @@ J:\webdev\BlazorAuth\BlazorAuth\BlazorAuth\obj\Debug\net8.0\refint\BlazorAuth.dl
 J:\webdev\BlazorAuth\BlazorAuth\BlazorAuth\obj\Debug\net8.0\BlazorAuth.pdb
 J:\webdev\BlazorAuth\BlazorAuth\BlazorAuth\obj\Debug\net8.0\BlazorAuth.genruntimeconfig.cache
 J:\webdev\BlazorAuth\BlazorAuth\BlazorAuth\obj\Debug\net8.0\ref\BlazorAuth.dll
+J:\webdev\BlazorAuth\BlazorAuth\BlazorAuth\obj\Debug\net8.0\BlazorAuth.sourcelink.json

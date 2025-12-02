@@ -6,14 +6,27 @@
 <h1>Counter</h1>
 
 <p role="status">Current count: @currentCount</p>
-
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<div>
+    <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+</div>
+<div class="mt-4">
+    <button class="btn btn-primary" @onclick="ShowGreeting">Greeting</button>
+</div>
+@msg
 
 @code {
+    [CascadingParameter]
+    private Task<AuthenticationState> authState { get; set; }
     private int currentCount = 0;
+    private string msg = string.Empty;
 
     private void IncrementCount()
     {
         currentCount++;
+    }
+    private async Task ShowGreeting()
+    {
+        var auth = await authState;
+        msg = $"Hello {auth.User.Identity.Name}";
     }
 }
